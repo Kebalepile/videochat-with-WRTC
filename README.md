@@ -2,4 +2,4 @@
 
 a video chat PWA based on WRTC and WebSockets.
 
-checkout [demo)[https://buafacetime.github.io]
+checkout [demo](https://buafacetime.github.io)
