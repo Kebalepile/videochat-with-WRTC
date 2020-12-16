@@ -98,21 +98,25 @@ function wsConn(conn) {
 	conn.on('close', (code, desc) => {
 		// console.log('client socket closed connection');
 		// console.log(desc);
-		desc = parseJson(desc);
-		let ary = getClients(desc.roomName);
-		if (ary.length) {
-			ary.filter((registerdConn) => registerdConn !== conn).map((registerdConn) => {
-				if (registerdConn) {
-					registerdConn.sendUTF(
-						toJson({
-							type: 'exitRoom',
-							message: desc.message,
-						})
-					);
-				}
-			});
+			try {
+			desc = parseJson(desc);
+			let ary = getClients(desc.roomName);
+			if (ary.length) {
+				ary.filter((registerdConn) => registerdConn !== conn).map((registerdConn) => {
+					if (registerdConn) {
+						registerdConn.sendUTF(
+							toJson({
+								type: 'exitRoom',
+								message: desc.message,
+							})
+						);
+					}
+				});
 
-			deleteClients(desc.roomName);
+				deleteClients(desc.roomName);
+			}
+		} catch (e) {
+			console.error(e);
 		}
 	});
 }
